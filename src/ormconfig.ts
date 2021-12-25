@@ -5,7 +5,7 @@ const config: ConnectionOptions = {
   host: process.env.HOST,
   port: 5432,
   url: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
+  ssl: process.env.DATABASE_URL ? true : false,
   username: 'postgres',
   password: 'postgres',
   database: 'mediumclone',
