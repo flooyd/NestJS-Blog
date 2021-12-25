@@ -82,5 +82,8 @@
   },
   "_moduleAliases": {
     "@app": "./dist"
+  },
+  "engines": {
+    "node": "16.13.1"
   }
 }
