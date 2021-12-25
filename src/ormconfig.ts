@@ -11,7 +11,7 @@ const config: ConnectionOptions = {
       : false,
   username: 'postgres',
   password: 'postgres',
-  database: 'mediumclone',
+  database: process.env.DATABASE || 'mediumclone',
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
   synchronize: false,
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
