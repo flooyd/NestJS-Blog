@@ -39,11 +39,14 @@ export class ArticleController {
   @UsePipes(new ValidationPipe())
   @Roles('user')
   @UseGuards(new RolesGuard(new Reflector()))
-  async getOwnArticles(
-    @Req() request: any,
-    @Query() query,
-  ): Promise<[ArticleEntity[], number]> {
-    console.log(query.dogs);
-    return this.articleService.getArticles(query, request.user.id);
+  async getOwnArticles(@Req() request: any, @Query() query) {
+    let [articles, count] = await this.articleService.getArticles(
+      query,
+      request.user.id,
+    );
+    return {
+      articles,
+      count,
+    };
   }
 }
