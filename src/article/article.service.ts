@@ -30,7 +30,11 @@ export class ArticleService {
     }
 
     const newArticle = new ArticleEntity();
-    Object.assign(newArticle, { ...createArticleDto, userId });
+    Object.assign(newArticle, {
+      ...createArticleDto,
+      userId,
+      author: userId,
+    });
     return await this.articleRepository.save(newArticle);
   }
 
