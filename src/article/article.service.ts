@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { ArticleEntity } from '@app/article/article.entity';
 import { CreateArticleDto } from './dto/createArticle.dto';
 import { ArticleResponseInterface } from '@app/article/types/articleResponse.interface';
+import { UserEntity } from '@app/user/user.entity';
 
 @Injectable()
 export class ArticleService {
@@ -37,15 +38,14 @@ export class ArticleService {
     query: any,
     userId?: number | null,
   ): Promise<[ArticleEntity[], number]> {
-    const take = query.take || 10;
-    const skip = query.skip || 0;
-    if (userId) {
-      return this.articleRepository.findAndCount({
-        where: { userId },
-        take,
-        skip,
-      });
-    }
+    const data = await this.articleRepository
+      .createQueryBuilder('article')
+      .innerJoin('article.author', 'author')
+      .select(['article', 'author.username', 'author.id', 'author.image'])
+      .take(5)
+      .getManyAndCount();
+
+    return data;
   }
 
   buildArticleResponse(article: ArticleEntity): ArticleResponseInterface {
