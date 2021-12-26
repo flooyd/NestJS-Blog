@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { hash } from 'bcrypt';
-import { classToPlain, Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class UserEntity {
