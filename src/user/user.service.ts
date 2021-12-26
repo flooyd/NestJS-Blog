@@ -16,6 +16,12 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  async getUsers(): Promise<UserEntity[]> {
+    const users = await this.userRepository.find();
+
+    return users;
+  }
+
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const userByEmail = await this.userRepository.findOne({
       email: createUserDto.email,
@@ -30,7 +36,7 @@ export class UserService {
       );
     }
     const newUser = new UserEntity();
-    Object.assign(newUser, createUserDto);
+    Object.assign(newUser, { ...createUserDto, roles: 'user' });
     return await this.userRepository.save(newUser);
   }
 
@@ -58,6 +64,7 @@ export class UserService {
       );
     }
 
+    console.log('user', userByUsername);
     return userByUsername;
   }
 
@@ -67,6 +74,7 @@ export class UserService {
         id: user.id,
         username: user.username,
         email: user.email,
+        roles: user.roles,
       },
       JWT_SECRET,
     );
@@ -86,11 +94,13 @@ export class UserService {
   }
 
   buildUserResponse(user: UserEntity): UserResponseInterface {
+    const token = this.generateJwt(user);
     delete user.password;
+    console.log(user);
     return {
       user: {
         ...user,
-        token: this.generateJwt(user),
+        token,
       },
     };
   }
