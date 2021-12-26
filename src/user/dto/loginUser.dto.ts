@@ -1,9 +1,9 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class LoginUserDto {
-  @IsNotEmpty()
+  @MinLength(3, { message: 'Username should be at least 3 characters.' })
   readonly username: string;
 
-  @IsNotEmpty()
+  @MinLength(3, { message: 'Password should be at least 3 characters.' })
   readonly password: string;
 }
