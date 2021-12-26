@@ -46,7 +46,7 @@ export class ArticleService {
       .createQueryBuilder('article')
       .innerJoin('article.author', 'author')
       .select(['article', 'author.username', 'author.id', 'author.image'])
-      .take(5)
+      .take(100)
       .getManyAndCount();
 
     return data;
