@@ -4,7 +4,6 @@ import { Repository } from 'typeorm';
 import { ArticleEntity } from '@app/article/article.entity';
 import { CreateArticleDto } from './dto/createArticle.dto';
 import { ArticleResponseInterface } from '@app/article/types/articleResponse.interface';
-import { UserEntity } from '@app/user/user.entity';
 
 @Injectable()
 export class ArticleService {
@@ -46,6 +45,7 @@ export class ArticleService {
       .createQueryBuilder('article')
       .innerJoin('article.author', 'author')
       .select(['article', 'author.username', 'author.id', 'author.image'])
+      .where({ author: userId })
       .take(100)
       .getManyAndCount();
 
