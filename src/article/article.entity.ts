@@ -15,6 +15,9 @@ export class ArticleEntity {
   @Column({ default: '' })
   tags: string;
 
+  @Column({ default: '' })
+  visibility: string;
+
   @Column()
   userId: number;
 
