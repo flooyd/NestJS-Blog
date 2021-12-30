@@ -52,8 +52,10 @@ export class ArticleController {
   }
 
   @Get('articles/:id')
-  async getArticle(@Param() id): Promise<ArticleEntity> {
-    const article = await this.articleService.getArticleById(id);
+  async getArticle(@Param() params): Promise<ArticleEntity> {
+    const article = await this.articleService.getArticleById(
+      parseInt(params.id),
+    );
     return article;
   }
 }
