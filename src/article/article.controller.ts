@@ -40,9 +40,8 @@ export class ArticleController {
   @UsePipes(new ValidationPipe())
   @Roles('user')
   @UseGuards(new RolesGuard(new Reflector()))
-  async getOwnArticles(@Req() request: any, @Query() query) {
-    const [articles, count] = await this.articleService.getArticles(
-      query,
+  async getOwnArticles(@Req() request: any) {
+    const [articles, count] = await this.articleService.getOwnArticles(
       request.user.id,
     );
     return {

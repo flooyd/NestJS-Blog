@@ -37,8 +37,7 @@ export class ArticleService {
     return await this.articleRepository.save(newArticle);
   }
 
-  async getArticles(
-    query: any,
+  async getOwnArticles(
     userId?: number | null,
   ): Promise<[ArticleEntity[], number]> {
     const data = await this.articleRepository
