@@ -44,10 +44,37 @@ export class ArticleService {
     const data = await this.articleRepository
       .createQueryBuilder('article')
       .innerJoin('article.author', 'author')
-      .select(['article', 'author.username', 'author.id', 'author.image'])
+      .select([
+        'article.id',
+        'article.title',
+        'author.username',
+        'author.id',
+        'author.image',
+      ])
       .where({ author: userId })
       .take(100)
       .getManyAndCount();
+
+    return data;
+  }
+
+  async getArticleById(
+    id: number,
+    userId?: number | null,
+  ): Promise<ArticleEntity> {
+    const data = await this.articleRepository
+      .createQueryBuilder('article')
+      .innerJoin('article.author', 'author')
+      .select([
+        'article.id',
+        'article.title',
+        'article.content',
+        'author.username',
+        'author.id',
+        'author.image',
+      ])
+      .where({ id })
+      .getOne();
 
     return data;
   }

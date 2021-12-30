@@ -24,19 +24,15 @@ export class RolesGuard implements CanActivate {
 }
 
 const matchRoles = (userRoles, guardRoles) => {
-  console.log(userRoles, guardRoles);
   for (const role of guardRoles) {
     if (userRoles.includes(role)) {
       return true;
     }
   }
-
-  return false;
 };
 
 const getUserToken = (request, roles) => {
   if (!request.headers.authorization) {
-    console.log(false);
     return false;
   }
 

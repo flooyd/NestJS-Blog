@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
   Req,
@@ -21,9 +22,9 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
 
   @Post('articles')
-  @UsePipes(new ValidationPipe())
   @Roles('user')
   @UseGuards(new RolesGuard(new Reflector()))
+  @UsePipes(new ValidationPipe())
   async createArticle(
     @Body('article') createArticleDto: CreateArticleDto,
     @Req() request: any,
@@ -40,7 +41,7 @@ export class ArticleController {
   @Roles('user')
   @UseGuards(new RolesGuard(new Reflector()))
   async getOwnArticles(@Req() request: any, @Query() query) {
-    let [articles, count] = await this.articleService.getArticles(
+    const [articles, count] = await this.articleService.getArticles(
       query,
       request.user.id,
     );
@@ -48,5 +49,11 @@ export class ArticleController {
       articles,
       count,
     };
+  }
+
+  @Get('articles/:id')
+  async getArticle(@Param() id): Promise<ArticleEntity> {
+    const article = await this.articleService.getArticleById(id);
+    return article;
   }
 }
