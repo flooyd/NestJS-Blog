@@ -9,18 +9,18 @@ export class RolesGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     let roles = this.reflector.get<string[]>('roles', context.getHandler());
-    console.log('hello');
     if (!roles) {
       return true;
     }
     const request = context.switchToHttp().getRequest();
+    console.log(request.raw.user);
     roles = roles[0].split(' ');
-    let userToken: any | false = getUserToken(request, roles);
+    let userToken: any | undefined = request.raw.user;
     if (!userToken) {
       return false;
     }
 
-    return matchRoles(request.user.roles.split(' '), roles);
+    return matchRoles(request.raw.user.roles.split(' '), roles);
   }
 }
 
@@ -30,20 +30,4 @@ const matchRoles = (userRoles, guardRoles) => {
       return true;
     }
   }
-};
-
-const getUserToken = (request, roles) => {
-  if (!request.headers.authorization) {
-    return false;
-  }
-
-  let token = request.headers.authorization.split(' ')[1];
-  let decoded = verify(token, JWT_SECRET);
-
-  if (decoded) {
-    request.user = decoded;
-    return decoded;
-  }
-
-  return false;
 };

@@ -18,5 +18,5 @@ export class CreateArticleDto {
   readonly tags: string;
 
   @IsIn(['public', 'private', 'draft'])
-  readonly type: string;
+  readonly visibility: string;
 }

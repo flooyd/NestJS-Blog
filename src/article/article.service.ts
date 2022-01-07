@@ -46,6 +46,7 @@ export class ArticleService {
       .select([
         'article.id',
         'article.title',
+        'article.visibility',
         'author.username',
         'author.id',
         'author.image',
@@ -53,7 +54,7 @@ export class ArticleService {
       .where({ author: userId })
       .take(100)
       .getManyAndCount();
-
+    console.log(data);
     return data;
   }
 

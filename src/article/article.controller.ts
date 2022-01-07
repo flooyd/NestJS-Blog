@@ -31,7 +31,7 @@ export class ArticleController {
   ) {
     const article = await this.articleService.createArticle(
       createArticleDto,
-      request.user.id,
+      request.raw.user.id,
     );
     return this.articleService.buildArticleResponse(article);
   }
@@ -41,8 +41,9 @@ export class ArticleController {
   @Roles('user')
   @UseGuards(new RolesGuard(new Reflector()))
   async getOwnArticles(@Req() request: any) {
+    console.log(request.raw.user);
     const [articles, count] = await this.articleService.getOwnArticles(
-      request.user.id,
+      request.raw.user.id,
     );
     return {
       articles,
